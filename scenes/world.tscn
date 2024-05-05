@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=3 uid="uid://deuuvm43cs7rw"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_8esyq"]
+[ext_resource type="PackedScene" uid="uid://u1odmf5env08" path="res://scenes/planet.tscn" id="2_jqd23"]
+[ext_resource type="Script" path="res://scripts/player_camera.gd" id="3_claw4"]
+
+[sub_resource type="Environment" id="Environment_j6xi0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vt5wh"]
+albedo_color = Color(0, 0.505882, 0.713726, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_nylm2"]
+material = SubResource("StandardMaterial3D_vt5wh")
+radius = 0.25
+height = 1.75
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_d6dol"]
+radius = 0.25
+height = 1.75
+
+[node name="World" type="Node3D"]
+
+[node name="Planet" parent="." instance=ExtResource("2_jqd23")]
+
+[node name="Planet2" parent="." instance=ExtResource("2_jqd23")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1337, 18.204)
+
+[node name="Planet3" parent="." instance=ExtResource("2_jqd23")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 11.0147, -6.05228)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_j6xi0")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+
+[node name="Player" type="CharacterBody3D" parent="." node_paths=PackedStringArray("_focus_point")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.38683, 0)
+script = ExtResource("1_8esyq")
+_focus_point = NodePath("FocusPoint")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+mesh = SubResource("CapsuleMesh_nylm2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.875, 0)
+shape = SubResource("CapsuleShape3D_d6dol")
+
+[node name="FocusPoint" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -10)
+
+[node name="PlayerCamera" type="Camera3D" parent="Player" node_paths=PackedStringArray("player", "focus_point")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+script = ExtResource("3_claw4")
+player = NodePath("..")
+focus_point = NodePath("../FocusPoint")
+offset = Vector3(0, 0, 10)

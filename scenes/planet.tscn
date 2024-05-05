@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://u1odmf5env08"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_nye2v"]
+radius = 5.0
+height = 10.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ar0t2"]
+radius = 5.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_pepbs"]
+radius = 10.0
+
+[node name="Planet" type="Node3D"]
+
+[node name="PlanetBody" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="PlanetBody"]
+mesh = SubResource("SphereMesh_nye2v")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlanetBody"]
+shape = SubResource("SphereShape3D_ar0t2")
+
+[node name="PlanetGravity" type="Area3D" parent="."]
+gravity_space_override = 3
+gravity_point = true
+gravity_point_center = Vector3(0, 0, 0)
+gravity_direction = Vector3(0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlanetGravity"]
+shape = SubResource("SphereShape3D_pepbs")
